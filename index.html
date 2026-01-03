@@ -1,0 +1,1889 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JN Alvarez - Desarrollo Web & Software</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0f;
+            color: #fff;
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        /* Custom Cursor */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #6366f1;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 10000;
+            transition: all 0.15s ease;
+            transform: translate(-50%, -50%);
+        }
+
+        .cursor-follower {
+            width: 50px;
+            height: 50px;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 0.3s ease;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Animated Background - RESTAURADO */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%);
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -30px) rotate(120deg); }
+            66% { transform: translate(-20px, 20px) rotate(240deg); }
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: rgba(99, 102, 241, 0.6);
+            border-radius: 50%;
+            animation: float-particle 20s infinite;
+        }
+
+        @keyframes float-particle {
+            0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) translateX(100px); opacity: 0; }
+        }
+
+        /* Header Ultra Profesional */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1rem 5%;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid rgba(99, 102, 241, 0.15);
+            animation: slideDown 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            position: relative;
+            letter-spacing: 2px;
+        }
+
+        .logo-jn {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+        }
+
+        .logo-alvarez {
+            color: #fff;
+            font-weight: 300;
+            letter-spacing: 3px;
+        }
+
+        .logo-badge {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            color: #a5b4fc;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 0;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #6366f1, #8b5cf6);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-links a:hover {
+            color: #fff;
+        }
+
+        .nav-links a:hover::before {
+            width: 100%;
+        }
+
+        .btn-contact {
+            padding: 0.9rem 2rem;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            border: none;
+            border-radius: 50px;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-contact::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-contact:hover::before {
+            left: 100%;
+        }
+
+        .btn-contact:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 35px rgba(99, 102, 241, 0.6);
+        }
+
+        /* Menu Hamburguesa */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 2px;
+            background: #fff;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 5%;
+            margin-top: 80px;
+        }
+
+        .hero-content {
+            max-width: 1400px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-text {
+            animation: fadeInLeft 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes fadeInLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .hero-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(99, 102, 241, 0.1);
+            color: #a5b4fc;
+            padding: 0.5rem 1.2rem;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            letter-spacing: 1px;
+        }
+
+        .hero-label::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        .hero-text h1 {
+            font-size: 4.8rem;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            font-weight: 900;
+            letter-spacing: -2px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient-shift 3s ease infinite;
+            background-size: 200% 200%;
+        }
+
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .hero-text p {
+            font-size: 1.3rem;
+            color: #94a3b8;
+            margin-bottom: 2.5rem;
+            line-height: 1.8;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .btn-primary {
+            padding: 1.1rem 2.8rem;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            border: none;
+            border-radius: 50px;
+            color: #fff;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-primary:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 10px 40px rgba(99, 102, 241, 0.7);
+        }
+
+        .btn-secondary {
+            padding: 1.1rem 2.8rem;
+            background: transparent;
+            border: 2px solid #6366f1;
+            border-radius: 50px;
+            color: #fff;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-secondary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            transition: left 0.4s ease;
+            z-index: -1;
+        }
+
+        .btn-secondary:hover::before {
+            left: 0;
+        }
+
+        .btn-secondary:hover {
+            border-color: #8b5cf6;
+            transform: translateY(-4px);
+        }
+
+        /* Hero Visual */
+        .hero-visual {
+            position: relative;
+            animation: fadeInRight 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes fadeInRight {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .code-window {
+            background: rgba(15, 23, 42, 0.9);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.6),
+                        0 0 0 1px rgba(99, 102, 241, 0.1) inset;
+            position: relative;
+            overflow: hidden;
+            transform: perspective(1000px) rotateY(-5deg);
+            transition: transform 0.6s ease;
+        }
+
+        .code-window:hover {
+            transform: perspective(1000px) rotateY(0deg);
+        }
+
+        .code-window::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 45px;
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            border-bottom: 1px solid rgba(99, 102, 241, 0.3);
+        }
+
+        .window-dots {
+            position: absolute;
+            top: 16px;
+            left: 20px;
+            display: flex;
+            gap: 8px;
+            z-index: 1;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        .dot:hover {
+            transform: scale(1.2);
+        }
+
+        .dot:nth-child(1) { background: #ef4444; box-shadow: 0 0 10px rgba(239, 68, 68, 0.5); }
+        .dot:nth-child(2) { background: #f59e0b; box-shadow: 0 0 10px rgba(245, 158, 11, 0.5); }
+        .dot:nth-child(3) { background: #10b981; box-shadow: 0 0 10px rgba(16, 185, 129, 0.5); }
+
+        .code-content {
+            margin-top: 45px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            line-height: 2;
+        }
+
+        .code-line {
+            opacity: 0;
+            animation: typeLine 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            padding: 0.2rem 0;
+        }
+
+        .code-line:nth-child(1) { animation-delay: 0.3s; }
+        .code-line:nth-child(2) { animation-delay: 0.5s; }
+        .code-line:nth-child(3) { animation-delay: 0.7s; }
+        .code-line:nth-child(4) { animation-delay: 0.9s; }
+        .code-line:nth-child(5) { animation-delay: 1.1s; }
+        .code-line:nth-child(6) { animation-delay: 1.3s; }
+        .code-line:nth-child(7) { animation-delay: 1.5s; }
+
+        @keyframes typeLine {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .keyword { color: #c792ea; font-weight: 600; }
+        .function { color: #82aaff; }
+        .string { color: #c3e88d; }
+        .number { color: #f78c6c; }
+
+        /* Services Section */
+        .services {
+            padding: 8rem 5%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 5rem;
+        }
+
+        .section-title h2 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+        }
+
+        .section-title p {
+            font-size: 1.3rem;
+            color: #94a3b8;
+        }
+
+        .services-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .service-card {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 25px;
+            padding: 3rem;
+            backdrop-filter: blur(20px);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(139, 92, 246, 0.15) 100%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .service-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-15px);
+            border-color: rgba(99, 102, 241, 0.6);
+            box-shadow: 0 25px 70px rgba(99, 102, 241, 0.4);
+        }
+
+        .service-card:hover::before,
+        .service-card:hover::after {
+            opacity: 1;
+        }
+
+        .service-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.8rem;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+            transition: all 0.4s ease;
+        }
+
+        .service-card:hover .service-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .service-icon svg {
+            width: 35px;
+            height: 35px;
+            stroke: white;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .service-card h3 {
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+            font-weight: 700;
+        }
+
+        .service-card p {
+            color: #94a3b8;
+            line-height: 1.8;
+            position: relative;
+            z-index: 1;
+            font-size: 1.05rem;
+        }
+
+        /* Stats Section */
+        .stats {
+            padding: 6rem 5%;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Portfolio Section */
+        .portfolio {
+            padding: 8rem 5%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .portfolio-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 3rem;
+        }
+
+        .portfolio-card {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 25px;
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .portfolio-card:hover {
+            transform: translateY(-15px);
+            border-color: rgba(99, 102, 241, 0.6);
+            box-shadow: 0 25px 70px rgba(99, 102, 241, 0.4);
+        }
+
+        .portfolio-image {
+            height: 350px;
+            background: #1e293b;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        /* Mockup Pallets San Juan - E-commerce */
+        .portfolio-image.pallets {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        }
+
+        .mockup-browser {
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            transform: perspective(1000px) rotateY(-5deg);
+            transition: transform 0.6s ease;
+        }
+
+        .portfolio-card:hover .mockup-browser {
+            transform: perspective(1000px) rotateY(0deg);
+        }
+
+        .browser-bar {
+            height: 35px;
+            background: #e5e7eb;
+            display: flex;
+            align-items: center;
+            padding: 0 1rem;
+            gap: 0.5rem;
+        }
+
+        .browser-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .browser-dot:nth-child(1) { background: #ef4444; }
+        .browser-dot:nth-child(2) { background: #f59e0b; }
+        .browser-dot:nth-child(3) { background: #10b981; }
+
+        .browser-content {
+            height: calc(100% - 35px);
+            background: #f9fafb;
+            padding: 1.5rem;
+            overflow: hidden;
+        }
+
+        .pallet-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            height: 100%;
+        }
+
+        .pallet-item {
+            background: white;
+            border-radius: 8px;
+            padding: 0.8rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .pallet-img {
+            width: 100%;
+            height: 60px;
+            background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+            border-radius: 6px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pallet-img::before,
+        .pallet-img::after {
+            content: '';
+            position: absolute;
+            background: rgba(255, 255, 255, 0.3);
+            height: 100%;
+        }
+
+        .pallet-img::before {
+            width: 20%;
+            left: 10%;
+        }
+
+        .pallet-img::after {
+            width: 20%;
+            right: 10%;
+        }
+
+        .pallet-title {
+            height: 8px;
+            background: #d1d5db;
+            border-radius: 4px;
+            width: 80%;
+        }
+
+        .pallet-price {
+            height: 12px;
+            background: #6366f1;
+            border-radius: 4px;
+            width: 50%;
+        }
+
+        /* Mockup Vinoteca - Elegante */
+        .portfolio-image.vinoteca {
+            background: linear-gradient(135deg, #450a0a 0%, #7f1d1d 50%, #1e293b 100%);
+        }
+
+        .wine-mockup {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            transform: perspective(1000px) rotateY(5deg);
+            transition: transform 0.6s ease;
+            position: relative;
+        }
+
+        .portfolio-card:hover .wine-mockup {
+            transform: perspective(1000px) rotateY(0deg);
+        }
+
+        .wine-header {
+            height: 50px;
+            background: linear-gradient(90deg, #7f1d1d 0%, #991b1b 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            border-bottom: 2px solid #fbbf24;
+        }
+
+        .wine-content {
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            height: calc(100% - 50px);
+        }
+
+        .wine-bottle {
+            background: linear-gradient(180deg, rgba(127, 29, 29, 0.3) 0%, rgba(127, 29, 29, 0.1) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bottle-shape {
+            width: 30px;
+            height: 100px;
+            background: linear-gradient(180deg, #7f1d1d 0%, #450a0a 100%);
+            border-radius: 15px 15px 5px 5px;
+            position: relative;
+        }
+
+        .bottle-shape::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 15px;
+            height: 20px;
+            background: #450a0a;
+            border-radius: 3px 3px 0 0;
+        }
+
+        .bottle-shape::after {
+            content: '';
+            position: absolute;
+            top: 25%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 2px;
+            background: #fbbf24;
+        }
+
+        .wine-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .wine-text-line {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+        }
+
+        .wine-text-line:nth-child(1) { width: 80%; }
+        .wine-text-line:nth-child(2) { width: 60%; }
+        .wine-text-line:nth-child(3) { width: 90%; height: 12px; background: #fbbf24; margin-top: 0.5rem; }
+
+        .portfolio-content {
+            padding: 2rem;
+        }
+
+        .portfolio-tag {
+            display: inline-block;
+            background: rgba(99, 102, 241, 0.2);
+            color: #a5b4fc;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        .portfolio-content h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .portfolio-content p {
+            color: #94a3b8;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .portfolio-tech {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .portfolio-tech span {
+            background: rgba(99, 102, 241, 0.1);
+            color: #a5b4fc;
+            padding: 0.4rem 1rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+
+        /* Technologies Section */
+        .technologies {
+            padding: 8rem 5%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .tech-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .tech-item {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            backdrop-filter: blur(20px);
+            transition: all 0.4s ease;
+        }
+
+        .tech-item:hover {
+            transform: translateY(-10px);
+            border-color: rgba(99, 102, 241, 0.5);
+            box-shadow: 0 20px 50px rgba(99, 102, 241, 0.3);
+        }
+
+        .tech-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            transition: all 0.4s ease;
+        }
+
+        .tech-item:hover .tech-icon {
+            transform: scale(1.1) rotate(5deg);
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.3) 0%, rgba(139, 92, 246, 0.3) 100%);
+        }
+
+        .tech-icon svg {
+            width: 30px;
+            height: 30px;
+            stroke: #6366f1;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .tech-item h4 {
+            font-size: 1rem;
+            color: #cbd5e1;
+            font-weight: 600;
+        }
+
+        /* Process Section */
+        .process {
+            padding: 8rem 5%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .process-timeline {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            gap: 3rem;
+        }
+
+        .process-step {
+            display: grid;
+            grid-template-columns: 100px 1fr;
+            gap: 3rem;
+            align-items: start;
+            position: relative;
+        }
+
+        .process-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 50px;
+            top: 100px;
+            width: 2px;
+            height: calc(100% + 3rem);
+            background: linear-gradient(180deg, rgba(99, 102, 241, 0.5) 0%, transparent 100%);
+        }
+
+        .step-number {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 900;
+            box-shadow: 0 10px 40px rgba(99, 102, 241, 0.5);
+            transition: all 0.4s ease;
+        }
+
+        .process-step:hover .step-number {
+            transform: scale(1.1);
+            box-shadow: 0 15px 50px rgba(99, 102, 241, 0.7);
+        }
+
+        .step-content {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 20px;
+            padding: 2.5rem;
+            backdrop-filter: blur(20px);
+            transition: all 0.4s ease;
+        }
+
+        .process-step:hover .step-content {
+            border-color: rgba(99, 102, 241, 0.5);
+            transform: translateX(10px);
+        }
+
+        .step-content h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .step-content p {
+            color: #94a3b8;
+            line-height: 1.7;
+            font-size: 1.05rem;
+        }
+
+        /* Testimonials Section */
+        .testimonials {
+            padding: 8rem 5%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .testimonials-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 3rem;
+        }
+
+        .testimonial-card {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 25px;
+            padding: 3rem;
+            backdrop-filter: blur(20px);
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .testimonial-card::before {
+            content: '"';
+            position: absolute;
+            top: 20px;
+            left: 30px;
+            font-size: 6rem;
+            color: rgba(99, 102, 241, 0.2);
+            font-family: Georgia, serif;
+            line-height: 1;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(99, 102, 241, 0.5);
+            box-shadow: 0 20px 50px rgba(99, 102, 241, 0.3);
+        }
+
+        .testimonial-rating {
+            color: #fbbf24;
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.3rem;
+        }
+
+        .testimonial-text {
+            color: #cbd5e1;
+            line-height: 1.8;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .author-info h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .author-info p {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .stats-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 2.5rem;
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 25px;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            backdrop-filter: blur(20px);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(99, 102, 241, 0.5);
+            box-shadow: 0 20px 50px rgba(99, 102, 241, 0.3);
+        }
+
+        .stat-card:hover::before {
+            opacity: 1;
+        }
+
+        .stat-number {
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-label {
+            color: #94a3b8;
+            font-size: 1.1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* CTA Section */
+        .cta {
+            padding: 8rem 5%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(139, 92, 246, 0.15) 100%);
+            border: 1px solid rgba(99, 102, 241, 0.4);
+            border-radius: 35px;
+            padding: 5rem;
+            backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .cta-container h2 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+            font-weight: 900;
+        }
+
+        .cta-container p {
+            font-size: 1.3rem;
+            color: #94a3b8;
+            margin-bottom: 2.5rem;
+            position: relative;
+            z-index: 1;
+            line-height: 1.8;
+        }
+
+        .cta-container .btn-primary {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 5%;
+            border-top: 1px solid rgba(99, 102, 241, 0.15);
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            color: #64748b;
+        }
+
+        /* WhatsApp Floating Button */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.5);
+            z-index: 1001;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            animation: pulse-whatsapp 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-whatsapp {
+            0%, 100% {
+                box-shadow: 0 4px 20px rgba(37, 211, 102, 0.5);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 8px 40px rgba(37, 211, 102, 0.8);
+                transform: scale(1.05);
+            }
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 40px rgba(37, 211, 102, 0.8);
+        }
+
+        .whatsapp-float svg {
+            width: 35px;
+            height: 35px;
+            fill: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            body {
+                cursor: auto;
+            }
+
+            .cursor, .cursor-follower {
+                display: none;
+            }
+
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .hero-text h1 {
+                font-size: 3rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .code-window {
+                transform: none;
+            }
+
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tech-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+
+            .process-step {
+                grid-template-columns: 80px 1fr;
+                gap: 1.5rem;
+            }
+
+            .step-number {
+                width: 80px;
+                height: 80px;
+                font-size: 1.5rem;
+            }
+
+            .process-step:not(:last-child)::after {
+                left: 40px;
+                top: 80px;
+            }
+
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title h2 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+    <div class="bg-animation"></div>
+    <div class="particles" id="particles"></div>
+
+    <header>
+        <nav>
+            <div class="logo-container">
+                <div class="logo">
+                    <span class="logo-jn">JN</span>
+                    <span class="logo-alvarez">ALVAREZ</span>
+                </div>
+                <span class="logo-badge">DEV STUDIO</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#servicios">Servicios</a></li>
+                <li><a href="#proyectos">Proyectos</a></li>
+                <li><a href="#nosotros">Nosotros</a></li>
+                <li><button class="btn-contact">Contacto</button></li>
+            </ul>
+            <div class="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <div class="hero-label">DESARROLLO DE ÉLITE</div>
+                <h1>Código <span class="gradient-text">sin límites</span></h1>
+                <p>Transformamos ideas audaces en experiencias digitales excepcionales. Desarrollo web y software de última generación con tecnologías modernas y diseño innovador.</p>
+                <div class="hero-buttons">
+                    <button class="btn-primary">Empezar proyecto</button>
+                    <button class="btn-secondary">Ver portfolio</button>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="code-window">
+                    <div class="window-dots">
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                    </div>
+                    <div class="code-content">
+                        <div class="code-line"><span class="keyword">class</span> <span class="function">JNAlvarez</span> {</div>
+                        <div class="code-line">  <span class="function">constructor</span>() {</div>
+                        <div class="code-line">    <span class="keyword">this</span>.calidad = <span class="string">'premium'</span>;</div>
+                        <div class="code-line">    <span class="keyword">this</span>.experiencia = <span class="number">3</span>;</div>
+                        <div class="code-line">    <span class="keyword">this</span>.proyectos = <span class="number">10</span>+;</div>
+                        <div class="code-line">  }</div>
+                        <div class="code-line">}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="services" id="servicios">
+        <div class="section-title">
+            <h2>Servicios de <span class="gradient-text">Élite</span></h2>
+            <p>Soluciones tecnológicas diseñadas para impulsar tu éxito</p>
+        </div>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">
+                    <svg viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="2" y1="12" x2="22" y2="12"/>
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                    </svg>
+                </div>
+                <h3>Desarrollo Web</h3>
+                <p>Sitios web ultrarrápidos, modernos y optimizados para conversión. Diseño responsive premium que cautiva y convierte visitantes en clientes fieles.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">
+                    <svg viewBox="0 0 24 24">
+                        <rect x="2" y="3" width="20" height="14" rx="2"/>
+                        <line x1="8" y1="21" x2="16" y2="21"/>
+                        <line x1="12" y1="17" x2="12" y2="21"/>
+                    </svg>
+                </div>
+                <h3>Software a Medida</h3>
+                <p>Sistemas personalizados que se adaptan perfectamente a tu negocio. Automatización inteligente, integración perfecta y escalabilidad garantizada.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">
+                    <svg viewBox="0 0 24 24">
+                        <line x1="12" y1="20" x2="12" y2="10"/>
+                        <line x1="18" y1="20" x2="18" y2="4"/>
+                        <line x1="6" y1="20" x2="6" y2="16"/>
+                    </svg>
+                </div>
+                <h3>SEO & Marketing</h3>
+                <p>Domina los resultados de búsqueda con estrategias SEO avanzadas. Analytics profundo y optimización continua para máxima visibilidad online.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">+10</div>
+                <div class="stat-label">Proyectos Completados</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">Satisfacción del Cliente</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">Soporte Disponible</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">3</div>
+                <div class="stat-label">Años de Experiencia</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Casos de Éxito -->
+    <section class="portfolio" id="proyectos">
+        <div class="section-title">
+            <h2>Casos de <span class="gradient-text">Éxito</span></h2>
+            <p>Proyectos que transformaron negocios en San Juan</p>
+        </div>
+        <div class="portfolio-grid">
+            <div class="portfolio-card">
+                <div class="portfolio-image pallets">
+                    <div class="mockup-browser">
+                        <div class="browser-bar">
+                            <div class="browser-dot"></div>
+                            <div class="browser-dot"></div>
+                            <div class="browser-dot"></div>
+                        </div>
+                        <div class="browser-content">
+                            <div class="pallet-grid">
+                                <div class="pallet-item">
+                                    <div class="pallet-img"></div>
+                                    <div class="pallet-title"></div>
+                                    <div class="pallet-price"></div>
+                                </div>
+                                <div class="pallet-item">
+                                    <div class="pallet-img"></div>
+                                    <div class="pallet-title"></div>
+                                    <div class="pallet-price"></div>
+                                </div>
+                                <div class="pallet-item">
+                                    <div class="pallet-img"></div>
+                                    <div class="pallet-title"></div>
+                                    <div class="pallet-price"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="portfolio-content">
+                    <div class="portfolio-tag">E-COMMERCE</div>
+                    <h3>Pallets San Juan</h3>
+                    <p>Plataforma e-commerce moderna para la venta de pallets industriales. Sistema de cotización automática y gestión de pedidos en tiempo real.</p>
+                    <div class="portfolio-tech">
+                        <span>React</span>
+                        <span>Node.js</span>
+                        <span>MongoDB</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="portfolio-card">
+                <div class="portfolio-image vinoteca">
+                    <div class="wine-mockup">
+                        <div class="wine-header">VALLE DEL SOL</div>
+                        <div class="wine-content">
+                            <div class="wine-bottle">
+                                <div class="bottle-shape"></div>
+                            </div>
+                            <div class="wine-bottle">
+                                <div class="bottle-shape"></div>
+                            </div>
+                            <div class="wine-info">
+                                <div class="wine-text-line"></div>
+                                <div class="wine-text-line"></div>
+                                <div class="wine-text-line"></div>
+                            </div>
+                            <div class="wine-info">
+                                <div class="wine-text-line"></div>
+                                <div class="wine-text-line"></div>
+                                <div class="wine-text-line"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="portfolio-content">
+                    <div class="portfolio-tag">WEB PREMIUM</div>
+                    <h3>Vinoteca Valle del Sol</h3>
+                    <p>Sitio web elegante con catálogo digital de vinos sanjuaninos. Sistema de reservas online y blog de catas con SEO optimizado.</p>
+                    <div class="portfolio-tech">
+                        <span>WordPress</span>
+                        <span>WooCommerce</span>
+                        <span>SEO</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tecnologías -->
+    <section class="technologies">
+        <div class="section-title">
+            <h2>Tecnologías <span class="gradient-text">Modernas</span></h2>
+            <p>Herramientas de última generación para resultados excepcionales</p>
+        </div>
+        <div class="tech-grid">
+            <div class="tech-item">
+                <div class="tech-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                    </svg>
+                </div>
+                <h4>React & Next.js</h4>
+            </div>
+            <div class="tech-item">
+                <div class="tech-icon">
+                    <svg viewBox="0 0 24 24">
+                        <rect x="2" y="2" width="20" height="8" rx="2" ry="2"/>
+                        <rect x="2" y="14" width="20" height="8" rx="2" ry="2"/>
+                        <line x1="6" y1="6" x2="6.01" y2="6"/>
+                        <line x1="6" y1="18" x2="6.01" y2="18"/>
+                    </svg>
+                </div>
+                <h4>Node.js & Express</h4>
+            </div>
+            <div class="tech-item">
+                <div class="tech-icon">
+                    <svg viewBox="0 0 24 24">
+                        <ellipse cx="12" cy="5" rx="9" ry="3"/>
+                        <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+                        <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+                    </svg>
+                </div>
+                <h4>MongoDB & SQL</h4>
+            </div>
+            <div class="tech-item">
+                <div class="tech-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                        <polyline points="7.5 4.21 12 6.81 16.5 4.21"/>
+                        <polyline points="7.5 19.79 7.5 14.6 3 12"/>
+                        <polyline points="21 12 16.5 14.6 16.5 19.79"/>
+                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                        <line x1="12" y1="22.08" x2="12" y2="12"/>
+                    </svg>
+                </div>
+                <h4>AWS & Docker</h4>
+            </div>
+            <div class="tech-item">
+                <div class="tech-icon">
+                    <svg viewBox="0 0 24 24">
+                        <polyline points="16 18 22 12 16 6"/>
+                        <polyline points="8 6 2 12 8 18"/>
+                    </svg>
+                </div>
+                <h4>Git & GitHub</h4>
+            </div>
+            <div class="tech-item">
+                <div class="tech-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                    </svg>
+                </div>
+                <h4>Tailwind CSS</h4>
+            </div>
+        </div>
+    </section>
+
+    <!-- Proceso de Trabajo -->
+    <section class="process">
+        <div class="section-title">
+            <h2>Nuestro <span class="gradient-text">Proceso</span></h2>
+            <p>Metodología probada para garantizar resultados excepcionales</p>
+        </div>
+        <div class="process-timeline">
+            <div class="process-step">
+                <div class="step-number">01</div>
+                <div class="step-content">
+                    <h3>Descubrimiento</h3>
+                    <p>Entendemos tu visión, objetivos y necesidades específicas para crear una estrategia personalizada.</p>
+                </div>
+            </div>
+            <div class="process-step">
+                <div class="step-number">02</div>
+                <div class="step-content">
+                    <h3>Diseño</h3>
+                    <p>Creamos prototipos interactivos y diseños que cautivan, siempre con tu feedback en el centro.</p>
+                </div>
+            </div>
+            <div class="process-step">
+                <div class="step-number">03</div>
+                <div class="step-content">
+                    <h3>Desarrollo</h3>
+                    <p>Construimos con código limpio, escalable y optimizado usando las mejores prácticas de la industria.</p>
+                </div>
+            </div>
+            <div class="process-step">
+                <div class="step-number">04</div>
+                <div class="step-content">
+                    <h3>Lanzamiento</h3>
+                    <p>Desplegamos tu proyecto con soporte continuo y monitoreo para asegurar un rendimiento óptimo.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonios -->
+    <section class="testimonials">
+        <div class="section-title">
+            <h2>Lo que dicen <span class="gradient-text">nuestros clientes</span></h2>
+            <p>Historias reales de éxito y transformación digital</p>
+        </div>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="testimonial-rating">
+                    ★★★★★
+                </div>
+                <p class="testimonial-text">"JN Alvarez transformó completamente nuestra presencia digital. El nuevo sitio no solo es hermoso, sino que triplicó nuestras conversiones. Profesionalismo de élite."</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">CN</div>
+                    <div class="author-info">
+                        <h4>Cuadra Nahuel</h4>
+                        <p>Propietario, Pallets San Juan</p>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-rating">
+                    ★★★★★
+                </div>
+                <p class="testimonial-text">"Excelente trabajo en nuestra vinoteca online. El diseño es elegante y la funcionalidad impecable. Nuestras ventas online crecieron un 200% en solo 3 meses."</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">RC</div>
+                    <div class="author-info">
+                        <h4>Roberto Campos</h4>
+                        <p>Propietario, Vinoteca Valle del Sol</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta">
+        <div class="cta-container">
+            <h2>¿Listo para crear algo extraordinario?</h2>
+            <p>Convierte tu visión en realidad con soluciones digitales de clase mundial. Contáctanos hoy y comienza tu transformación digital.</p>
+            <button class="btn-primary">Iniciar ahora</button>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 JN Alvarez - Dev Studio. Creando el futuro, una línea de código a la vez.</p>
+    </footer>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/5492644000000?text=Hola%20JN%20Alvarez!%20Me%20interesa%20desarrollar%20un%20proyecto%20web" class="whatsapp-float" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 32 32">
+            <path d="M16 0C7.163 0 0 7.163 0 16c0 2.825.736 5.478 2.024 7.78L0 32l8.427-2.011C10.726 31.27 13.283 32 16 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm8.074 22.694c-.348.977-1.726 1.792-2.831 2.027-.751.159-1.731.286-5.03-1.08-4.224-1.75-6.951-6.014-7.16-6.292-.206-.278-1.694-2.254-1.694-4.299 0-2.045 1.073-3.052 1.455-3.467.382-.415.833-.519 1.11-.519.278 0 .556.003.799.014.256.012.599-.097.936.714.348.838 1.185 2.891 1.289 3.099.104.208.174.45.035.728-.139.278-.208.45-.417.694-.208.243-.438.543-.625.729-.208.208-.426.433-.183.85.243.415 1.081 1.784 2.319 2.889 1.59 1.424 2.929 1.866 3.346 2.077.417.208.66.174.903-.104.243-.278 1.042-1.215 1.32-1.632.278-.417.555-.347.936-.208.382.139 2.423 1.143 2.84 1.35.417.208.694.312.799.486.104.174.104 1.007-.243 1.983z"/>
+        </svg>
+    </a>
+
+    <script>
+        // Custom Cursor
+        const cursor = document.querySelector('.cursor');
+        const follower = document.querySelector('.cursor-follower');
+
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            
+            setTimeout(() => {
+                follower.style.left = e.clientX + 'px';
+                follower.style.top = e.clientY + 'px';
+            }, 100);
+        });
+
+        document.querySelectorAll('button, a').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.style.transform = 'translate(-50%, -50%) scale(1.5)';
+                cursor.style.borderColor = '#8b5cf6';
+                follower.style.transform = 'translate(-50%, -50%) scale(1.5)';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+                cursor.style.borderColor = '#6366f1';
+                follower.style.transform = 'translate(-50%, -50%) scale(1)';
+            });
+        });
+
+        // Particles
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 50; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 20 + 's';
+            particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            particlesContainer.appendChild(particle);
+        }
+
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Header on Scroll
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            const header = document.querySelector('header');
+            
+            if (currentScroll > lastScroll && currentScroll > 100) {
+                header.style.transform = 'translateY(-100%)';
+            } else {
+                header.style.transform = 'translateY(0)';
+            }
+            lastScroll = currentScroll;
+        });
+
+        // Funcionalidad de botones del Hero
+        // Cambia este número por tu número de WhatsApp (incluye código de país sin +)
+        const whatsappNumber = '5492646182202'; // Argentina +54 9 264 6182202
+        const whatsappMessage = encodeURIComponent('¡Hola JN Alvarez! Me interesa comenzar un proyecto web. ¿Podemos hablar?');
+
+        // Botón "Empezar proyecto" - Abre WhatsApp
+        document.querySelectorAll('.btn-primary').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                // Si es el botón del hero o del CTA
+                if (!btn.closest('.hero-buttons') && !btn.closest('.cta-container')) return;
+                
+                // Animación de click
+                btn.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    btn.style.transform = '';
+                }, 200);
+
+                // Abre WhatsApp
+                window.open(`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`, '_blank');
+            });
+        });
+
+        // Botón "Ver portfolio" - Scroll a proyectos
+        document.querySelectorAll('.btn-secondary').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                // Animación de click
+                btn.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    btn.style.transform = '';
+                }, 200);
+
+                // Scroll suave a la sección de proyectos
+                const projectsSection = document.getElementById('proyectos');
+                if (projectsSection) {
+                    projectsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Botones de contacto en el header
+        document.querySelectorAll('.btn-contact').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                // Animación de click
+                btn.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    btn.style.transform = '';
+                }, 200);
+
+                // Abre WhatsApp
+                window.open(`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`, '_blank');
+            });
+        });
+    </script>
+</body>
+</html>
